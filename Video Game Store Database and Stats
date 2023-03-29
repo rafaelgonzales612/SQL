@@ -1,0 +1,42 @@
+--Created a video game store database--
+
+CREATE TABLE MyGamingStore (
+id INTeger PRIMARY KEY,
+video_game TEXT,
+console TEXT,
+game_genre TEXT,
+price INTEGER,
+stock INTEGER
+);
+
+INSERT INTO MyGamingStore VALUES
+(1, "Elden Ring", "PC", "Action", 70, 100),
+(2, "Overwatch", "PC", "FPS", 60, 75),
+(3, "Diablo IV", "PC", "Action", 70, 150),
+(4, "Last of Us", "Playstation", "Action", 50, 50),
+(5, "Halo", "Xbox", "FPS", 20, 15),
+(6, "Horizon Zero Dawn", "Playstation", "Adventure", 30, 30),
+(7, "Horizon Forbidden West", "Playstation", "Adventure", 60, 70),
+(8, "Cyberpunk", "PC", "Action", 50, 50),
+(9, "Call of Duty MW2", "PC", "FPS", 70, 100),
+(10, "Forza Horizon 5", "Xbox", "Racing", 60, 80),
+(11, "Gears of War 5", "Xbox", "Action", 60, 65),
+(12, "Ori and the Will of the Wisps", "Xbox", "Platformer", 40, 45),
+(13, "God of War Ragnarok", "Playstation", "Action", 70, 100),
+(14, "Uncharted Collection", "Playstation", "Adventure", 50, 50),
+(15, "Death Stranding", "PC", "Adventure", 60, 65);
+
+--displayed whole database--
+SELECT *
+FROM MyGamingStore;
+
+--display price of games for PC in ascending order--
+SELECT *
+FROM MyGamingStore
+WHERE console = "PC"
+ORDER BY price;
+
+--display games that are stocked above 75 in descending order--
+FROM MyGamingStore
+WHERE stock > 75
+ORDER BY stock desc;
