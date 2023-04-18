@@ -1,0 +1,47 @@
+--In this SQL code, I am querying a multitable database to quantify customer and order data!
+
+--How many orders were placed in Januay?
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE length(orderID) = 6
+AND orderID <> 'Order ID';
+
+--How many iPhone orders were placed in January?
+SELECT COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE length(orderID) = 6
+AND orderID <> 'Order ID'
+AND Product = 'iPhone';
+
+--Select customer account numers for all the orders placed in February
+SELECT DISTINCT c.acctnum
+FROM customers c
+JOIN FebSales FS
+ON c.order_ID = FS.orderID
+WHERE length(c.order_id) = 6
+AND orderID <> 'Order ID';
+
+--Which product was the cheapest one sold in January, and what was the price?
+SELECT DISTINCT Product, price
+FROM BIT_DB.JanSales
+WHERE price IN (SELECT MIN(price) FROM BIT_DB.JanSales);
+
+--What is the total revenue for each product sold in January?
+SELECT Product, (SUM(quantity) * price) AS 'Total Revenue'
+FROM BIT_DB.JanSales
+GROUP BY Product;
+
+--Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+SELECT Product, SUM(quantity) AS 'Quantity',(SUM(quantity) * price) AS 'Total Revenue'
+FROM BIT_DB.FebSales
+WHERE location = '548 Lincoln St, Seattle, WA 98101'
+GROUP BY Product;
+
+--How many customers ordered more than 2 products at a time in February, and what was the average amount spent for those customers?
+SELECT count(DISTINCT c.acctnum) AS 'Customer', (AVG(FS.quantity * price)) AS 'Average Spent'
+FROM BIT_DB.FebSales FS
+JOIN BIT_DB.customers c
+ON FS.orderID = c.order_id
+WHERE length(FS.orderID) = 6
+AND FS.orderID <> 'Order ID'
+AND FS.quantity > 2;
