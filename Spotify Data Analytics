@@ -69,3 +69,17 @@ SELECT track_name, tempo, energy
 FROM BIT_DB.Spotifydata
 WHERE energy > (SELECT AVG(energy) FROM BIT_DB.Spotifydata)
 ORDER BY tempo ASC;
+
+--8. What is the total duration (in minutes) of all the tracks in this list?
+SELECT SUM(duration_ms / 1000) / 60 AS 'Total Duration in Minutes'
+FROM BIT_DB.Spotifydata;
+
+--9. Which tracks are not in 4/4 time signature?
+SELECT track_name, artist_name, time_signature
+FROM BIT_DB.Spotifydata
+WHERE time_signature <> 4;
+
+--10. List the tracks and their artist in descending order according to the tracks' acousticness
+SELECT track_name, artist_name, acousticness
+FROM BIT_DB.Spotifydata
+ORDER BY acousticness DESC;
