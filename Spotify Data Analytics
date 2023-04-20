@@ -23,3 +23,49 @@ duration_ms integer NOT NULL,
 time_signature integer NOT NULL )
 
 --Next, I inserted the Spotify data .csv into the table and then did an analysis on the data using the following SQL:
+
+--1. What are the top 10 tracks of 2021 based on popularity?
+SELECT track_name, artist_name, popularity
+FROM BIT_DB.Spotifydata
+ORDER BY popularity DESC
+LIMIT 10;
+
+--2. What is the average tempo of tracks by each artist?
+SELECT artist_name, AVG(tempo)
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name;
+
+--3. Which artists have tracks that are longer than the average duration, and what are those tracks?
+SELECT artist_name, track_name
+FROM BIT_DB.Spotifydata
+WHERE duration_ms > (SELECT AVG(duration_ms) FROM BIT_DB.Spotifydata)
+ORDER BY duration_ms DESC;
+
+--4. How many tracks does each artist have on the list?
+SELECT artist_name, COUNT(track_name) AS '# of Tracks'
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+ORDER BY COUNT(track_name) DESC;
+
+--5. Which tracks have below average danceability, energy, and liveness?
+SELECT track_name, danceability, energy, liveness
+FROM BIT_DB.Spotifydata
+WHERE danceability < (SELECT AVG(danceability) FROM BIT_DB.Spotifydata)
+AND energy < (SELECT AVG(energy) FROM BIT_DB.Spotifydata)
+AND liveness < (SELECT AVG(liveness) FROM BIT_DB.Spotifydata)
+ORDER BY danceability DESC, energy DESC, liveness DESC;
+
+--6. Displays tracks and their loudness rating using CASE
+SELECT track_name, loudness,
+    CASE
+        WHEN loudness > -4 THEN 'loud'
+        WHEN loudness > -9 THEN 'moderate'
+        ELSE 'quiet'
+    END AS 'loudness rating'
+FROM BIT_DB.Spotifydata;
+
+--7. Which tracks have a slow tempo but above average energy?
+SELECT track_name, tempo, energy
+FROM BIT_DB.Spotifydata
+WHERE energy > (SELECT AVG(energy) FROM BIT_DB.Spotifydata)
+ORDER BY tempo ASC;
